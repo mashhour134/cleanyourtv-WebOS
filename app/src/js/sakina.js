@@ -71,7 +71,7 @@ function sakinaDraw() {
   sakinaPrayerMarkup();
 }
 function sakinaShow() {
-  if (document.hidden || LIVE.on || stack.length) return;
+  if (document.hidden || LIVE.on || stack.length) { SAKINA_IDLE = setTimeout(sakinaShow, 180000); return; }
   var el = document.getElementById('sakina-screen');
   if (!el) return;
   SAKINA_OPEN = true;
@@ -120,6 +120,6 @@ var sakinaPlay = document.getElementById('sakina-play');
 if (sakinaPlay) sakinaPlay.addEventListener('click', function (e) {
   e.stopPropagation();
   var p = sakinaPrayerCard();
-  if (p && p.audio) sakinaAudio(p.audio);
+  if (p && p.audio) sakinaAudio(p.audio, p.volume);
 });
 sakinaWake();
