@@ -1,6 +1,12 @@
 {
  "_name": "العربية",
  "_dir": "rtl",
+ "HTTPS audio URL (optional)": "رابط صوت HTTPS (اختياري)",
+ "Audio volume": "مستوى الصوت",
+ "Low": "منخفض",
+ "High": "مرتفع",
+ "Full": "كامل",
+ "Arrows change dhikr · OK counts · Up plays or pauses audio · Back to leave": "الأسهم لتغيير الذكر · OK للعدّ · للأعلى لتشغيل الصوت أو إيقافه · الرجوع للخروج",
  "Audio URL (optional)": "رابط الصوت (اختياري)",
  "Prayer audio": "صوت الصلاة",
  "Play manually": "تشغيل يدوي",
