@@ -1,6 +1,7 @@
 {
  "_name": "العربية",
  "_dir": "rtl",
+ "Prayer times unavailable.": "مواقيت الصلاة غير متاحة حاليًا.",
  "HTTPS audio URL (optional)": "رابط صوت HTTPS (اختياري)",
  "Audio volume": "مستوى الصوت",
  "Low": "منخفض",
