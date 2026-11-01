@@ -270,7 +270,7 @@ function cardMarkup(src) {
 var PRAYER_CACHE = {};
 var ADHKAR_ITEMS = [
   { text: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', count: 100, source: 'صحيح البخاري 6405' },
-  { text: 'أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ', count: 100, source: 'صحيح البخاري 6307' },
+  { text: 'أَسْتَغْفِرُ اللَّهَ', count: 100, source: 'صحيح مسلم 2702a' },
   { text: 'لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير', count: 100, source: 'صحيح البخاري 3293' },
 ];
 function prayerFor(o) {
