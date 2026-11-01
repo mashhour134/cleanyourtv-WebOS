@@ -24,6 +24,8 @@ function sakinaPrayerMarkup() {
   var p = sakinaPrayerCard(), data = p && prayerFor(p), next = prayerNext(data);
   var el = document.getElementById('sakina-times');
   if (!el) return;
+  var place = document.getElementById('sakina-place');
+  if (place) place.textContent = p && p.place ? p.place : '';
   if (!p || p.lat === undefined || p.lon === undefined) { el.textContent = t('Set up prayer times in Customise > Cards.'); return; }
   if (!data || !data.timings) { el.textContent = t('Prayer times unavailable.'); return; }
   var now = new Date(), rows = [['Fajr', data.timings.Fajr], ['Dhuhr', data.timings.Dhuhr], ['Asr', data.timings.Asr], ['Maghrib', data.timings.Maghrib], ['Isha', data.timings.Isha]];
@@ -91,25 +93,24 @@ function sakinaWake() {
   SAKINA_IDLE = setTimeout(sakinaShow, 180000);
 }
 document.addEventListener('keydown', function (e) {
-  if (SAKINA_OPEN) {
-    var k = e.keyCode;
+  if (!SAKINA_OPEN) { sakinaWake(); return; }
+  var k = e.keyCode;
+  if (k === 461 || k === 27 || k === 8) { e.preventDefault(); e.stopPropagation(); sakinaHide(); return; }
+  if (k === 13) {
     e.preventDefault(); e.stopPropagation();
-    if (k === 461 || k === 27 || k === 8) { sakinaHide(); return; }
-    if (k === 13) {
-      SAKINA_COUNT = Math.min(ADHKAR_ITEMS[SAKINA_INDEX].count, SAKINA_COUNT + 1);
-      sakinaDraw();
-    } else if (k === 37 || k === 39) {
-      SAKINA_INDEX = (SAKINA_INDEX + 1) % ADHKAR_ITEMS.length;
-      SAKINA_COUNT = 0;
-      sakinaDraw();
-    } else if (k === 38 || k === 40 || k === 403) {
-      var p = sakinaPrayerCard();
-      if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused) window.SAKINA_AUDIO.pause();
-      else if (p && p.audio && p.sound !== 'off') sakinaAudio(p.audio, p.volume);
-    }
-    return;
-  }
-  sakinaWake();
+    SAKINA_COUNT = Math.min(ADHKAR_ITEMS[SAKINA_INDEX].count, SAKINA_COUNT + 1);
+    sakinaDraw();
+  } else if (k === 37 || k === 39) {
+    e.preventDefault(); e.stopPropagation();
+    SAKINA_INDEX = (SAKINA_INDEX + 1) % ADHKAR_ITEMS.length;
+    SAKINA_COUNT = 0;
+    sakinaDraw();
+  } else if (k === 38 || k === 40 || k === 403) {
+    e.preventDefault(); e.stopPropagation();
+    var p = sakinaPrayerCard();
+    if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused) window.SAKINA_AUDIO.pause();
+    else if (p && p.audio && p.sound !== 'off') sakinaAudio(p.audio, p.volume);
+  } else sakinaHide();
 }, true);
 document.addEventListener('mousedown', function () { if (!SAKINA_OPEN) sakinaWake(); }, true);
 document.addEventListener('mousemove', function () { if (!SAKINA_OPEN) sakinaWake(); }, true);
