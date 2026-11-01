@@ -281,9 +281,9 @@ function prayerFor(o) {
     e.busy = true;
     api('/api/cards/prayer', { lat: lat, lon: lon, method: method }).then(function (r) {
       e.busy = false; e.at = Date.now(); e.data = r && r.timings ? r : null; e.error = r && r.error ? String(r.error) : ''; tickCards();
-    }).catch(function () { e.busy = false; e.at = Date.now() - 1500000; });
+    }).catch(function () { e.busy = false; e.error = 'Prayer times unavailable.'; e.at = Date.now() - 1500000; });
   }
-  return e.data;
+  return e.data || (e.error ? { error: e.error } : null);
 }
 function prayerNext(data) {
   if (!data || !data.timings) return null;
@@ -308,7 +308,7 @@ var CARD_TYPES = {
       if (!timings) {
         el.innerHTML = '<div class="sakina-title"></div><div class="sakina-note"></div>';
         el.querySelector('.sakina-title').textContent = t('Prayer times');
-        el.querySelector('.sakina-note').textContent = o.lat === undefined ? t('Choose a place from your phone') : (PRAYER_CACHE[(+o.lat) + ',' + (+o.lon) + ',' + (+o.method || 4)] || {}).error ? t('Prayer times unavailable.') : t('Loading prayer times…');
+        el.querySelector('.sakina-note').textContent = o.lat === undefined ? t('Choose a place from your phone') : data && data.error ? t('Prayer times unavailable.') : t('Loading prayer times…');
         return;
       }
       var rem = next ? Math.max(0, Math.floor((next.at.getTime() - Date.now()) / 60000)) : 0;
