@@ -267,7 +267,78 @@ function cardMarkup(src) {
     })
     .join('');
 }
+var PRAYER_CACHE = {};
+var ADHKAR_ITEMS = [
+  { text: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', count: 100, source: 'صحيح البخاري 6405' },
+  { text: 'أَسْتَغْفِرُ اللَّهَ', count: 100, source: 'صحيح مسلم 2702a' },
+  { text: 'لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير', count: 100, source: 'صحيح البخاري 3293' },
+];
+function prayerFor(o) {
+  var lat = +o.lat, lon = +o.lon, method = +o.method || 4;
+  if (!isFinite(lat) || !isFinite(lon)) return null;
+  var key = lat + ',' + lon + ',' + method, e = PRAYER_CACHE[key] || (PRAYER_CACHE[key] = { data: null, error: '', at: 0, busy: false });
+  if (!e.busy && Date.now() - e.at > 1800000) {
+    e.busy = true;
+    api('/api/cards/prayer', { lat: lat, lon: lon, method: method }).then(function (r) {
+      e.busy = false; e.at = Date.now(); e.data = r && r.timings ? r : null; e.error = r && r.error ? String(r.error) : ''; tickCards();
+    }).catch(function () { e.busy = false; e.error = 'Prayer times unavailable.'; e.at = Date.now() - 1500000; });
+  }
+  return e.data || (e.error ? { error: e.error } : null);
+}
+function prayerNext(data) {
+  if (!data || !data.timings) return null;
+  var now = new Date(), names = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  var labels = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  for (var i = 0; i < names.length; i++) {
+    var hm = String(data.timings[names[i]] || '').split(':'), at;
+    if (hm.length !== 2) continue;
+    at = new Date(now.getFullYear(), now.getMonth(), now.getDate(), +hm[0], +hm[1], 0, 0);
+    if (at > now) return { name: t(labels[i]), time: data.timings[names[i]], at: at };
+  }
+  var fajr = String(data.timings.Fajr || '').split(':');
+  if (fajr.length === 2) return { name: t('Fajr'), time: data.timings.Fajr, at: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, +fajr[0], +fajr[1], 0, 0) };
+  return null;
+}
 var CARD_TYPES = {
+  prayer: {
+    name: function () { return t('Prayer times'); },
+    draw: function (el, o) {
+      var data = prayerFor(o), next = prayerNext(data), timings = data && data.timings;
+      var place = String(o.place || '').slice(0, 50);
+      if (!timings) {
+        el.innerHTML = '<div class="sakina-title"></div><div class="sakina-note"></div>';
+        el.querySelector('.sakina-title').textContent = t('Prayer times');
+        el.querySelector('.sakina-note').textContent = o.lat === undefined ? t('Choose a place from your phone') : data && data.error ? t('Prayer times unavailable.') : t('Loading prayer times…');
+        return;
+      }
+      var rem = next ? Math.max(0, Math.floor((next.at.getTime() - Date.now()) / 60000)) : 0;
+      var h = '<div class="sakina-head"><span class="sakina-title">' + t('Next prayer') + '</span><strong>' + (next ? next.name : '') + '</strong><span class="sakina-count"></span></div><div class="sakina-times"></div><div class="sakina-place"></div>';
+      if (el._key !== h + JSON.stringify(timings) + Math.floor(Date.now() / 60000)) {
+        el._key = h + JSON.stringify(timings) + Math.floor(Date.now() / 60000);
+        el.innerHTML = h;
+        el.querySelector('.sakina-count').textContent = next ? next.time + ' · ' + rem + ' ' + t('min left') : '';
+        var rows = [['Fajr', timings.Fajr], ['Dhuhr', timings.Dhuhr], ['Asr', timings.Asr], ['Maghrib', timings.Maghrib], ['Isha', timings.Isha]];
+        el.querySelector('.sakina-times').innerHTML = rows.map(function (r) { return '<span><i>' + t(r[0]) + '</i><b>' + r[1] + '</b></span>'; }).join('');
+        el.querySelector('.sakina-place').textContent = place;
+      }
+    },
+  },
+  adhkar: {
+    name: function () { return t('Daily adhkar'); },
+    draw: function (el, o) {
+      var idx = el._adhkarIndex === undefined ? Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length : el._adhkarIndex, item = ADHKAR_ITEMS[idx];
+      var key = idx + '|' + item.text;
+      if (el._key === key) return;
+      el._key = key;
+      el.innerHTML = '<div class="sakina-title"></div><div class="dhikr-text"></div><div class="dhikr-meta"></div>';
+      el.querySelector('.sakina-title').textContent = t('Daily adhkar');
+      el.querySelector('.dhikr-text').textContent = item.text;
+      el.querySelector('.dhikr-meta').textContent = item.count + ' · ' + item.source;
+      el._o = { action: 'card', label: t('Daily adhkar') };
+    },
+    act: function (el) { el._adhkarIndex = ((el._adhkarIndex === undefined ? Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length : el._adhkarIndex) + 1) % ADHKAR_ITEMS.length; el._key = ''; tickCards(); },
+  },
+
   /* "Good morning" by the time of day, with an optional name and an optional second line (the date); set on the phone page */
   greeting: {
     name: function () {
