@@ -1,5 +1,5 @@
 /* Sakina: an idle screen with local adhkar and prayer times from the configured prayer card. */
-var SAKINA_OPEN = false, SAKINA_IDLE = 0, SAKINA_INDEX = 0, SAKINA_LAST_SOUND = '';
+var SAKINA_OPEN = false, SAKINA_IDLE = 0, SAKINA_INDEX = 0, SAKINA_COUNT = 0, SAKINA_LAST_SOUND = '';
 function sakinaPrayerCard() {
   var cards = cfg && cfg.cards || {};
   for (var k in cards) if (cards[k] && cards[k].type === 'prayer') return cards[k];
@@ -10,11 +10,12 @@ function sakinaDhikrCard() {
   for (var k in cards) if (cards[k] && cards[k].type === 'adhkar') return cards[k];
   return null;
 }
-function sakinaAudio(url) {
+function sakinaAudio(url, volume) {
   if (!url || !/^https:\/\//i.test(url)) return;
   try {
     if (window.SAKINA_AUDIO) { window.SAKINA_AUDIO.pause(); window.SAKINA_AUDIO = null; }
     window.SAKINA_AUDIO = new Audio(url);
+    window.SAKINA_AUDIO.volume = Math.max(0, Math.min(1, Number(volume) || 0.8));
     var playing = window.SAKINA_AUDIO.play();
     if (playing && playing.catch) playing.catch(function () {});
   } catch (e) {}
@@ -43,7 +44,7 @@ function sakinaPrayerMarkup() {
       if (hm.length !== 2) return false;
       if (now.getHours() === +hm[0] && now.getMinutes() === +hm[1]) {
         var key = now.toDateString() + r[0];
-        if (key !== SAKINA_LAST_SOUND) { SAKINA_LAST_SOUND = key; sakinaAudio(p.audio); }
+        if (key !== SAKINA_LAST_SOUND) { SAKINA_LAST_SOUND = key; sakinaAudio(p.audio, p.volume); }
         return true;
       }
       return false;
@@ -54,13 +55,13 @@ function sakinaDraw() {
   var item = ADHKAR_ITEMS[SAKINA_INDEX % ADHKAR_ITEMS.length];
   var text = document.getElementById('sakina-dhikr'), meta = document.getElementById('sakina-source');
   if (text) text.textContent = item.text;
-  if (meta) meta.textContent = item.count + ' ×  ·  ' + item.source;
+  if (meta) meta.textContent = SAKINA_COUNT + ' / ' + item.count + ' ×  ·  ' + item.source;
   var title = document.getElementById('sakina-dhikr-title');
   if (title) title.textContent = t('Daily adhkar');
   var kicker = document.querySelector('.sakina-prayer .sakina-kicker');
   if (kicker) kicker.textContent = t('Prayer times');
   var hint = document.getElementById('sakina-hint');
-  if (hint) hint.textContent = t('Use arrows to change the dhikr · OK to play or pause · Back to leave');
+  if (hint) hint.textContent = t('Arrows change dhikr · OK counts · Up plays or pauses audio · Back to leave');
   var date = document.getElementById('sakina-date');
   if (date) date.textContent = dateText();
   var play = document.getElementById('sakina-play'), p = sakinaPrayerCard();
