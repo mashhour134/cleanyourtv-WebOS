@@ -36,9 +36,17 @@ function sakinaPrayerMarkup() {
     var mins = Math.max(0, Math.floor((next.at.getTime() - now.getTime()) / 60000));
     n.textContent = t('Next prayer') + ' · ' + next.name + ' · ' + next.time + ' · ' + mins + ' ' + t('min left');
   }
-  if (p.sound === 'auto' && p.audio && next && next.at.getTime() <= now.getTime() && next.at.getTime() > now.getTime() - 60000) {
-    var key = new Date().toDateString() + next.name;
-    if (key !== SAKINA_LAST_SOUND) { SAKINA_LAST_SOUND = key; sakinaAudio(p.audio); }
+  if (p.sound === 'auto' && p.audio) {
+    rows.some(function (r) {
+      var hm = String(r[1] || '').split(':');
+      if (hm.length !== 2) return false;
+      if (now.getHours() === +hm[0] && now.getMinutes() === +hm[1]) {
+        var key = now.toDateString() + r[0];
+        if (key !== SAKINA_LAST_SOUND) { SAKINA_LAST_SOUND = key; sakinaAudio(p.audio); }
+        return true;
+      }
+      return false;
+    });
   }
 }
 function sakinaDraw() {
@@ -46,6 +54,16 @@ function sakinaDraw() {
   var text = document.getElementById('sakina-dhikr'), meta = document.getElementById('sakina-source');
   if (text) text.textContent = item.text;
   if (meta) meta.textContent = item.count + ' ×  ·  ' + item.source;
+  var title = document.getElementById('sakina-dhikr-title');
+  if (title) title.textContent = t('Daily adhkar');
+  var kicker = document.querySelector('.sakina-prayer .sakina-kicker');
+  if (kicker) kicker.textContent = t('Prayer times');
+  var hint = document.getElementById('sakina-hint');
+  if (hint) hint.textContent = t('Use arrows or OK to change the dhikr · Back to leave');
+  var date = document.getElementById('sakina-date');
+  if (date) date.textContent = dateText();
+  var play = document.getElementById('sakina-play'), p = sakinaPrayerCard();
+  if (play) { play.textContent = t('Play recitation'); play.style.display = p && p.audio ? 'inline-block' : 'none'; }
   sakinaPrayerMarkup();
 }
 function sakinaShow() {
