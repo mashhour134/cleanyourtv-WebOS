@@ -326,7 +326,7 @@ var CARD_TYPES = {
   adhkar: {
     name: function () { return t('Daily adhkar'); },
     draw: function (el, o) {
-      var idx = Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length, item = ADHKAR_ITEMS[idx];
+      var idx = el._adhkarIndex === undefined ? Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length : el._adhkarIndex, item = ADHKAR_ITEMS[idx];
       var key = idx + '|' + item.text;
       if (el._key === key) return;
       el._key = key;
@@ -336,7 +336,7 @@ var CARD_TYPES = {
       el.querySelector('.dhikr-meta').textContent = item.count + ' · ' + item.source;
       el._o = { action: 'card', label: t('Daily adhkar') };
     },
-    act: function (el) { el._key = ''; tickCards(); },
+    act: function (el) { el._adhkarIndex = ((el._adhkarIndex === undefined ? Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length : el._adhkarIndex) + 1) % ADHKAR_ITEMS.length; el._key = ''; tickCards(); },
   },
 
   /* "Good morning" by the time of day, with an optional name and an optional second line (the date); set on the phone page */
