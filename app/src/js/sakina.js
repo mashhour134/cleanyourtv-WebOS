@@ -24,8 +24,8 @@ function sakinaPrayerMarkup() {
   var p = sakinaPrayerCard(), data = p && prayerFor(p), next = prayerNext(data);
   var el = document.getElementById('sakina-times');
   if (!el) return;
-  if (!p || !p.lat || !p.lon) { el.textContent = t('Set up prayer times in Customise > Cards.'); return; }
-  if (!data || !data.timings) { el.textContent = t('Loading prayer times…'); return; }
+  if (!p || p.lat === undefined || p.lon === undefined) { el.textContent = t('Set up prayer times in Customise > Cards.'); return; }
+  if (!data || !data.timings) { el.textContent = t('Prayer times unavailable.'); return; }
   var now = new Date(), rows = [['Fajr', data.timings.Fajr], ['Dhuhr', data.timings.Dhuhr], ['Asr', data.timings.Asr], ['Maghrib', data.timings.Maghrib], ['Isha', data.timings.Isha]];
   el.innerHTML = '';
   rows.forEach(function (r) {
