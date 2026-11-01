@@ -762,7 +762,7 @@ body.wpon {
 .sakina-times span {
   display: flex;
   flex-direction: column;
-  margin-inline-end: 16px;
+  margin-right: 16px;
 }
 .sakina-times i {
   color: var(--ink2);
@@ -1029,7 +1029,7 @@ body.wpon {
 .sakina-screen {
   position: absolute;
   z-index: 80;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   display: none;
   padding: 72px 110px 48px;
   color: #f4f0e7;
