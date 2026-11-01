@@ -93,7 +93,11 @@ document.addEventListener('keydown', function (e) {
     var k = e.keyCode;
     e.preventDefault(); e.stopPropagation();
     if (k === 461 || k === 27 || k === 8) { sakinaHide(); return; }
-    if (k === 37 || k === 39 || k === 13 || k === 40 || k === 38) {
+    if (k === 13) {
+      var p = sakinaPrayerCard();
+      if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused) window.SAKINA_AUDIO.pause();
+      else if (p && p.audio) sakinaAudio(p.audio);
+    } else if (k === 37 || k === 39 || k === 40 || k === 38) {
       SAKINA_INDEX = (SAKINA_INDEX + 1) % ADHKAR_ITEMS.length;
       sakinaDraw();
     }
@@ -101,8 +105,8 @@ document.addEventListener('keydown', function (e) {
   }
   sakinaWake();
 }, true);
-document.addEventListener('mousedown', sakinaWake, true);
-document.addEventListener('mousemove', sakinaWake, true);
+document.addEventListener('mousedown', function () { if (!SAKINA_OPEN) sakinaWake(); }, true);
+document.addEventListener('mousemove', function () { if (!SAKINA_OPEN) sakinaWake(); }, true);
 document.addEventListener('visibilitychange', function () { if (document.hidden) sakinaHide(); else sakinaWake(); });
 setInterval(function () { if (SAKINA_OPEN) sakinaDraw(); }, 30000);
 var sakinaPlay = document.getElementById('sakina-play');
