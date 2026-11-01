@@ -2,7 +2,8 @@
 // The rules below catch what a newer Node accepts and Node 8 does not; AGENTS.md lists them.
 const fs = require('fs'),
   path = require('path'),
-  cp = require('child_process');
+  cp = require('child_process'),
+  http = require('http');
 const { root, helper, ok, run } = require('./lib');
 
 run(async () => {
@@ -69,4 +70,45 @@ run(async () => {
     'programs are started through exec.js (voice.js keeps its long-running recogniser and stream): ' +
       direct.map(f => path.basename(f)).join(', ')
   );
+
+  const serviceServer = require(path.join(helper, 'server')).create({
+    features: () => [
+      {
+        paths: ['/probe'],
+        handle: (req, res) => {
+          res.writeHead(200);
+          res.end('ok');
+        },
+      },
+    ],
+  });
+  await new Promise(resolve => serviceServer.listen(0, '127.0.0.1', resolve));
+  const originStatus = origin =>
+    new Promise((resolve, reject) => {
+      const req = http.get(
+        {
+          host: '127.0.0.1',
+          port: serviceServer.address().port,
+          path: '/probe',
+          headers: { Origin: origin },
+        },
+        res => {
+          res.resume();
+          res.on('end', () => resolve(res.statusCode));
+        }
+      );
+      req.on('error', reject);
+    });
+  try {
+    ok(
+      (await originStatus('file://com.cleanyourtv.sakina.test-webos')) === 200,
+      'the Sakina test app can call the service'
+    );
+    ok(
+      (await originStatus('file://com.cleanyourtv.sakina.other-webos')) === 403,
+      'unlisted app origins stay blocked'
+    );
+  } finally {
+    await new Promise(resolve => serviceServer.close(resolve));
+  }
 });
