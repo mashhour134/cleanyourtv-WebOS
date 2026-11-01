@@ -85,6 +85,8 @@ same place.
 | Home Assistant camera | A camera's picture, renewed every 10, 30 or 60 seconds while Home is shown. |
 | Home Assistant weather | A `weather.*` entity: the sky now with an icon, the temperature (from an outside temperature sensor if you choose one, otherwise the entity's own), humidity and wind, and the forecast for the next days or hours from `weather.get_forecasts` (Home Assistant 2023.9 and newer; older versions are read from the `forecast` attribute). Asked every five minutes, the forecast at most every 15 minutes. It also feeds `{{weather.temp}}`, `{{weather.text}}` and the greeting's weather line. |
 | Text | Your own text. `{{greeting}}`, `{{time}}`, `{{date}}` and `{{weekday}}` are filled in and kept up to date, and `{{weather.temp}}` and `{{weather.text}}` with a weather card on Home; `**bold**`, `*italic*` and a line starting with `#` for a heading. In three sizes. |
+| Prayer times | The next prayer and today's prayer times for a searched city. Choose Umm al-Qura, Muslim World League or ISNA. Uses AlAdhan; timings may differ from the local mosque. |
+| Daily adhkar | A local set of adhkar with repetition counts and references. OK advances the Home card. |
 
 **Customise** > **Home Assistant** (the first row, in themes with places for cards) chooses the cards with
 the remote: for each place the kind of card (Home Assistant entity, entities, camera, greeting or empty, and the Home Assistant weather card where the launcher has it) and what it shows,
@@ -103,7 +105,8 @@ A Home Assistant card stays hidden while Home Assistant is not set up or no enti
 either.
 
 Cards dim after three minutes without a key press and shift by a few pixels every few minutes, so nothing stays in one place on an
-OLED panel for hours. How a theme marks its places is in [Themes](themes.md#slots-for-cards).
+OLED panel for hours. The optional [Sakina screen](sakina-screen-saver.md) appears after three minutes of Home inactivity, with prayer times,
+adhkar and optional audio. How a theme marks its places is in [Themes](themes.md#slots-for-cards).
 
 ## Inputs
 
