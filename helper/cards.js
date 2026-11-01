@@ -158,6 +158,16 @@ const TYPES = [
           ['4', 'Umm al-Qura'],
           ['3', 'Muslim World League'],
           ['2', 'Islamic Society of North America'],
+          ['5', 'Egyptian General Authority of Survey'],
+        ],
+      },
+      {
+        key: 'source',
+        kind: 'choice',
+        label: 'Times from',
+        choices: [
+          ['', 'Calculated on the TV (no internet)'],
+          ['online', 'AlAdhan (online)'],
         ],
       },
       { key: 'audio', kind: 'text', label: 'HTTPS audio URL (optional)' },

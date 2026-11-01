@@ -85,7 +85,7 @@ same place.
 | Home Assistant camera | A camera's picture, renewed every 10, 30 or 60 seconds while Home is shown. |
 | Home Assistant weather | A `weather.*` entity: the sky now with an icon, the temperature (from an outside temperature sensor if you choose one, otherwise the entity's own), humidity and wind, and the forecast for the next days or hours from `weather.get_forecasts` (Home Assistant 2023.9 and newer; older versions are read from the `forecast` attribute). Asked every five minutes, the forecast at most every 15 minutes. It also feeds `{{weather.temp}}`, `{{weather.text}}` and the greeting's weather line. |
 | Text | Your own text. `{{greeting}}`, `{{time}}`, `{{date}}` and `{{weekday}}` are filled in and kept up to date, and `{{weather.temp}}` and `{{weather.text}}` with a weather card on Home; `**bold**`, `*italic*` and a line starting with `#` for a heading. In three sizes. |
-| Prayer times | The next prayer and today's prayer times for a searched city. Choose Umm al-Qura, Muslim World League or ISNA. Uses AlAdhan; timings may differ from the local mosque. |
+| Prayer times | The next prayer and today's prayer times for a searched city. Choose Umm al-Qura, Muslim World League, ISNA or the Egyptian method. By default the times are worked out on the TV from the city, so they need no internet and the place stays on the TV; *AlAdhan (online)* asks AlAdhan instead (a place in the far north, where the sun may not rise or set, is always asked from AlAdhan). Timings may differ by a minute or two from the local mosque. |
 | Daily adhkar | A local set of adhkar with repetition counts and references. OK advances the Home card. |
 
 **Customise** > **Home Assistant** (the first row, in themes with places for cards) chooses the cards with
