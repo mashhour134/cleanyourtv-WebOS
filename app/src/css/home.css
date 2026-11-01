@@ -1068,6 +1068,7 @@ body.wpon {
   font-size: 21px;
   letter-spacing: 0.12em;
 }
+#sakina-place { margin: -20px 0 24px; color: rgba(244,240,231,0.54); font-size: 20px; }
 #sakina-next {
   margin: 18px 0 36px;
   font-size: 40px;
