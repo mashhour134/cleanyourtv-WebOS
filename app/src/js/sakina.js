@@ -6,14 +6,12 @@ var SAKINA_OPEN = false,
   SAKINA_LAST_SOUND = '';
 function sakinaPrayerCard() {
   var cards = (cfg && cfg.cards) || {};
-  for (var k in cards)
-    if (cards[k] && cards[k].type === 'prayer') return cards[k];
+  for (var k in cards) if (cards[k] && cards[k].type === 'prayer') return cards[k];
   return null;
 }
 function sakinaDhikrCard() {
   var cards = (cfg && cfg.cards) || {};
-  for (var k in cards)
-    if (cards[k] && cards[k].type === 'adhkar') return cards[k];
+  for (var k in cards) if (cards[k] && cards[k].type === 'adhkar') return cards[k];
   return null;
 }
 function sakinaAudio(url, volume) {
@@ -24,10 +22,7 @@ function sakinaAudio(url, volume) {
       window.SAKINA_AUDIO = null;
     }
     window.SAKINA_AUDIO = new Audio(url);
-    window.SAKINA_AUDIO.volume = Math.max(
-      0,
-      Math.min(1, Number(volume) || 0.8)
-    );
+    window.SAKINA_AUDIO.volume = Math.max(0, Math.min(1, Number(volume) || 0.8));
     var playing = window.SAKINA_AUDIO.play();
     if (playing && playing.catch) playing.catch(function () {});
   } catch (e) {}
@@ -70,20 +65,8 @@ function sakinaPrayerMarkup() {
   });
   var n = document.getElementById('sakina-next');
   if (n && next) {
-    var mins = Math.max(
-      0,
-      Math.floor((next.at.getTime() - now.getTime()) / 60000)
-    );
-    n.textContent =
-      t('Next prayer') +
-      ' · ' +
-      next.name +
-      ' · ' +
-      next.time +
-      ' · ' +
-      mins +
-      ' ' +
-      t('min left');
+    var mins = Math.max(0, Math.floor((next.at.getTime() - now.getTime()) / 60000));
+    n.textContent = t('Next prayer') + ' · ' + next.name + ' · ' + next.time + ' · ' + mins + ' ' + t('min left');
   }
   if (p.sound === 'auto' && p.audio) {
     rows.some(function (r) {
@@ -106,26 +89,20 @@ function sakinaDraw() {
   var text = document.getElementById('sakina-dhikr'),
     meta = document.getElementById('sakina-source');
   if (text) text.textContent = item.text;
-  if (meta)
-    meta.textContent =
-      SAKINA_COUNT + ' / ' + item.count + ' ×  ·  ' + item.source;
+  if (meta) meta.textContent = SAKINA_COUNT + ' / ' + item.count + ' ×  ·  ' + item.source;
   var title = document.getElementById('sakina-dhikr-title');
   if (title) title.textContent = t('Daily adhkar');
   var kicker = document.querySelector('.sakina-prayer .sakina-kicker');
   if (kicker) kicker.textContent = t('Prayer times');
   var hint = document.getElementById('sakina-hint');
-  if (hint)
-    hint.textContent = t(
-      'Arrows change dhikr · OK counts · Up/Down/Blue plays or pauses audio · Back to leave'
-    );
+  if (hint) hint.textContent = t('Arrows change dhikr · OK counts · Up/Down/Blue plays or pauses audio · Back to leave');
   var date = document.getElementById('sakina-date');
   if (date) date.textContent = dateText();
   var play = document.getElementById('sakina-play'),
     p = sakinaPrayerCard();
   if (play) {
     play.textContent = t('Play recitation');
-    play.style.display =
-      p && p.audio && p.sound !== 'off' ? 'inline-block' : 'none';
+    play.style.display = p && p.audio && p.sound !== 'off' ? 'inline-block' : 'none';
   }
   sakinaPrayerMarkup();
 }
@@ -175,10 +152,7 @@ document.addEventListener(
     if (k === 13) {
       e.preventDefault();
       e.stopPropagation();
-      SAKINA_COUNT = Math.min(
-        ADHKAR_ITEMS[SAKINA_INDEX].count,
-        SAKINA_COUNT + 1
-      );
+      SAKINA_COUNT = Math.min(ADHKAR_ITEMS[SAKINA_INDEX].count, SAKINA_COUNT + 1);
       sakinaDraw();
     } else if (k === 37 || k === 39) {
       e.preventDefault();
@@ -190,10 +164,8 @@ document.addEventListener(
       e.preventDefault();
       e.stopPropagation();
       var p = sakinaPrayerCard();
-      if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused)
-        window.SAKINA_AUDIO.pause();
-      else if (p && p.audio && p.sound !== 'off')
-        sakinaAudio(p.audio, p.volume);
+      if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused) window.SAKINA_AUDIO.pause();
+      else if (p && p.audio && p.sound !== 'off') sakinaAudio(p.audio, p.volume);
     } else sakinaHide();
   },
   true

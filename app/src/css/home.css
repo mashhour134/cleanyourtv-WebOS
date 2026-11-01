@@ -738,8 +738,12 @@ body.wpon {
   flex-direction: column;
   align-items: flex-start;
 }
-[data-align="right"] .sakina-head { align-items: flex-end; }
-[data-align="center"] .sakina-head { align-items: center; }
+[data-align="right"] .sakina-head {
+  align-items: flex-end;
+}
+[data-align="center"] .sakina-head {
+  align-items: center;
+}
 .sakina-title {
   color: var(--ink2);
   font-size: calc(20px * var(--fs));
@@ -768,7 +772,9 @@ body.wpon {
   color: var(--ink2);
   font-style: normal;
 }
-.sakina-times b { font-weight: 600; }
+.sakina-times b {
+  font-weight: 600;
+}
 .sakina-place,
 .sakina-note,
 .dhikr-meta {
@@ -1029,14 +1035,20 @@ body.wpon {
 .sakina-screen {
   position: absolute;
   z-index: 80;
-  top: 0; right: 0; bottom: 0; left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: none;
   padding: 72px 110px 48px;
   color: #f4f0e7;
   background: #080a0c;
   direction: rtl;
 }
-.sakina-screen.open { display: flex; flex-direction: column; }
+.sakina-screen.open {
+  display: flex;
+  flex-direction: column;
+}
 .sakina-top,
 .sakina-foot {
   display: flex;
@@ -1045,7 +1057,10 @@ body.wpon {
   font-size: 22px;
   letter-spacing: 0.08em;
 }
-.sakina-top span:first-child { color: #d6bf8b; font-size: 25px; }
+.sakina-top span:first-child {
+  color: #d6bf8b;
+  font-size: 25px;
+}
 .sakina-main {
   display: flex;
   flex: 1;
@@ -1058,7 +1073,9 @@ body.wpon {
   flex: 1;
   min-width: 0;
 }
-.sakina-prayer { padding-left: 56px; }
+.sakina-prayer {
+  padding-left: 56px;
+}
 .sakina-dhikr-panel {
   padding: 34px 44px;
   border-right: 1px solid rgba(214, 191, 139, 0.25);
@@ -1068,25 +1085,36 @@ body.wpon {
   font-size: 21px;
   letter-spacing: 0.12em;
 }
-#sakina-place { margin: -20px 0 24px; color: rgba(244,240,231,0.54); font-size: 20px; }
+#sakina-place {
+  margin: -20px 0 24px;
+  color: rgba(244, 240, 231, 0.54);
+  font-size: 20px;
+}
 #sakina-next {
   margin: 18px 0 36px;
   font-size: 40px;
   font-weight: 600;
   color: #fff;
 }
-#sakina-times { max-width: 560px; }
+#sakina-times {
+  max-width: 560px;
+}
 .sakina-row {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  color: rgba(244,240,231,0.68);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(244, 240, 231, 0.68);
   font-size: 25px;
 }
-.sakina-row b { color: #f4f0e7; font-weight: 500; }
+.sakina-row b {
+  color: #f4f0e7;
+  font-weight: 500;
+}
 .sakina-row.next span,
-.sakina-row.next b { color: #d6bf8b; }
+.sakina-row.next b {
+  color: #d6bf8b;
+}
 #sakina-dhikr {
   max-width: 680px;
   margin-top: 28px;
@@ -1096,14 +1124,14 @@ body.wpon {
 }
 #sakina-source {
   margin-top: 22px;
-  color: rgba(244,240,231,0.5);
+  color: rgba(244, 240, 231, 0.5);
   font-size: 20px;
 }
 #sakina-play {
   display: none;
   margin-top: 32px;
   padding: 12px 22px;
-  border: 1px solid rgba(214,191,139,0.45);
+  border: 1px solid rgba(214, 191, 139, 0.45);
   border-radius: 4px;
   color: #d6bf8b;
   background: transparent;
@@ -1114,11 +1142,19 @@ body.wpon {
 .sakina-open #view,
 .sakina-open #cards,
 .sakina-open .glow,
-.sakina-open #toast { visibility: hidden; }
-.sakina-screen.open { animation: sakinaShift 240s ease-in-out infinite alternate; }
+.sakina-open #toast {
+  visibility: hidden;
+}
+.sakina-screen.open {
+  animation: sakinaShift 240s ease-in-out infinite alternate;
+}
 @keyframes sakinaShift {
-  from { transform: translate(0, 0); }
-  to { transform: translate(8px, -6px); }
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(8px, -6px);
+  }
 }
 /* OLED care (cards.js): dimmed after three minutes without a key; the slow shift of the whole layer is not animated */
 .cards-idle .card {

@@ -743,8 +743,12 @@ body.wpon {
   flex-direction: column;
   align-items: flex-start;
 }
-[data-align="right"] .sakina-head { align-items: flex-end; }
-[data-align="center"] .sakina-head { align-items: center; }
+[data-align="right"] .sakina-head {
+  align-items: flex-end;
+}
+[data-align="center"] .sakina-head {
+  align-items: center;
+}
 .sakina-title {
   color: var(--ink2);
   font-size: calc(20px * var(--fs));
@@ -773,7 +777,9 @@ body.wpon {
   color: var(--ink2);
   font-style: normal;
 }
-.sakina-times b { font-weight: 600; }
+.sakina-times b {
+  font-weight: 600;
+}
 .sakina-place,
 .sakina-note,
 .dhikr-meta {
@@ -1034,14 +1040,20 @@ body.wpon {
 .sakina-screen {
   position: absolute;
   z-index: 80;
-  top: 0; right: 0; bottom: 0; left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: none;
   padding: 72px 110px 48px;
   color: #f4f0e7;
   background: #080a0c;
   direction: rtl;
 }
-.sakina-screen.open { display: flex; flex-direction: column; }
+.sakina-screen.open {
+  display: flex;
+  flex-direction: column;
+}
 .sakina-top,
 .sakina-foot {
   display: flex;
@@ -1050,7 +1062,10 @@ body.wpon {
   font-size: 22px;
   letter-spacing: 0.08em;
 }
-.sakina-top span:first-child { color: #d6bf8b; font-size: 25px; }
+.sakina-top span:first-child {
+  color: #d6bf8b;
+  font-size: 25px;
+}
 .sakina-main {
   display: flex;
   flex: 1;
@@ -1063,7 +1078,9 @@ body.wpon {
   flex: 1;
   min-width: 0;
 }
-.sakina-prayer { padding-left: 56px; }
+.sakina-prayer {
+  padding-left: 56px;
+}
 .sakina-dhikr-panel {
   padding: 34px 44px;
   border-right: 1px solid rgba(214, 191, 139, 0.25);
@@ -1073,25 +1090,36 @@ body.wpon {
   font-size: 21px;
   letter-spacing: 0.12em;
 }
-#sakina-place { margin: -20px 0 24px; color: rgba(244,240,231,0.54); font-size: 20px; }
+#sakina-place {
+  margin: -20px 0 24px;
+  color: rgba(244, 240, 231, 0.54);
+  font-size: 20px;
+}
 #sakina-next {
   margin: 18px 0 36px;
   font-size: 40px;
   font-weight: 600;
   color: #fff;
 }
-#sakina-times { max-width: 560px; }
+#sakina-times {
+  max-width: 560px;
+}
 .sakina-row {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  color: rgba(244,240,231,0.68);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(244, 240, 231, 0.68);
   font-size: 25px;
 }
-.sakina-row b { color: #f4f0e7; font-weight: 500; }
+.sakina-row b {
+  color: #f4f0e7;
+  font-weight: 500;
+}
 .sakina-row.next span,
-.sakina-row.next b { color: #d6bf8b; }
+.sakina-row.next b {
+  color: #d6bf8b;
+}
 #sakina-dhikr {
   max-width: 680px;
   margin-top: 28px;
@@ -1101,14 +1129,14 @@ body.wpon {
 }
 #sakina-source {
   margin-top: 22px;
-  color: rgba(244,240,231,0.5);
+  color: rgba(244, 240, 231, 0.5);
   font-size: 20px;
 }
 #sakina-play {
   display: none;
   margin-top: 32px;
   padding: 12px 22px;
-  border: 1px solid rgba(214,191,139,0.45);
+  border: 1px solid rgba(214, 191, 139, 0.45);
   border-radius: 4px;
   color: #d6bf8b;
   background: transparent;
@@ -1119,11 +1147,19 @@ body.wpon {
 .sakina-open #view,
 .sakina-open #cards,
 .sakina-open .glow,
-.sakina-open #toast { visibility: hidden; }
-.sakina-screen.open { animation: sakinaShift 240s ease-in-out infinite alternate; }
+.sakina-open #toast {
+  visibility: hidden;
+}
+.sakina-screen.open {
+  animation: sakinaShift 240s ease-in-out infinite alternate;
+}
 @keyframes sakinaShift {
-  from { transform: translate(0, 0); }
-  to { transform: translate(8px, -6px); }
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(8px, -6px);
+  }
 }
 /* OLED care (cards.js): dimmed after three minutes without a key; the slow shift of the whole layer is not animated */
 .cards-idle .card {
@@ -3344,59 +3380,106 @@ var ADHKAR_ITEMS = [
   { text: 'لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير', count: 100, source: 'صحيح البخاري 3293' },
 ];
 function prayerFor(o) {
-  var lat = +o.lat, lon = +o.lon, method = +o.method || 4;
+  var lat = +o.lat,
+    lon = +o.lon,
+    method = +o.method || 4;
   if (!isFinite(lat) || !isFinite(lon)) return null;
-  var key = lat + ',' + lon + ',' + method, e = PRAYER_CACHE[key] || (PRAYER_CACHE[key] = { data: null, error: '', at: 0, busy: false });
+  var key = lat + ',' + lon + ',' + method,
+    e = PRAYER_CACHE[key] || (PRAYER_CACHE[key] = { data: null, error: '', at: 0, busy: false });
   if (!e.busy && Date.now() - e.at > 1800000) {
     e.busy = true;
-    api('/api/cards/prayer', { lat: lat, lon: lon, method: method }).then(function (r) {
-      e.busy = false; e.at = Date.now(); e.data = r && r.timings ? r : null; e.error = r && r.error ? String(r.error) : ''; tickCards();
-    }).catch(function () { e.busy = false; e.error = 'Prayer times unavailable.'; e.at = Date.now() - 1500000; });
+    api('/api/cards/prayer', { lat: lat, lon: lon, method: method })
+      .then(function (r) {
+        e.busy = false;
+        e.at = Date.now();
+        e.data = r && r.timings ? r : null;
+        e.error = r && r.error ? String(r.error) : '';
+        tickCards();
+      })
+      .catch(function () {
+        e.busy = false;
+        e.error = 'Prayer times unavailable.';
+        e.at = Date.now() - 1500000;
+      });
   }
   return e.data || (e.error ? { error: e.error } : null);
 }
 function prayerNext(data) {
   if (!data || !data.timings) return null;
-  var now = new Date(), names = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  var now = new Date(),
+    names = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
   var labels = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
   for (var i = 0; i < names.length; i++) {
-    var hm = String(data.timings[names[i]] || '').split(':'), at;
+    var hm = String(data.timings[names[i]] || '').split(':'),
+      at;
     if (hm.length !== 2) continue;
     at = new Date(now.getFullYear(), now.getMonth(), now.getDate(), +hm[0], +hm[1], 0, 0);
     if (at > now) return { name: t(labels[i]), time: data.timings[names[i]], at: at };
   }
   var fajr = String(data.timings.Fajr || '').split(':');
-  if (fajr.length === 2) return { name: t('Fajr'), time: data.timings.Fajr, at: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, +fajr[0], +fajr[1], 0, 0) };
+  if (fajr.length === 2)
+    return {
+      name: t('Fajr'),
+      time: data.timings.Fajr,
+      at: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, +fajr[0], +fajr[1], 0, 0),
+    };
   return null;
 }
 var CARD_TYPES = {
   prayer: {
-    name: function () { return t('Prayer times'); },
+    name: function () {
+      return t('Prayer times');
+    },
     draw: function (el, o) {
-      var data = prayerFor(o), next = prayerNext(data), timings = data && data.timings;
+      var data = prayerFor(o),
+        next = prayerNext(data),
+        timings = data && data.timings;
       var place = String(o.place || '').slice(0, 50);
       if (!timings) {
         el.innerHTML = '<div class="sakina-title"></div><div class="sakina-note"></div>';
         el.querySelector('.sakina-title').textContent = t('Prayer times');
-        el.querySelector('.sakina-note').textContent = o.lat === undefined ? t('Choose a place from your phone') : data && data.error ? t('Prayer times unavailable.') : t('Loading prayer times…');
+        el.querySelector('.sakina-note').textContent =
+          o.lat === undefined
+            ? t('Choose a place from your phone')
+            : data && data.error
+              ? t('Prayer times unavailable.')
+              : t('Loading prayer times…');
         return;
       }
       var rem = next ? Math.max(0, Math.floor((next.at.getTime() - Date.now()) / 60000)) : 0;
-      var h = '<div class="sakina-head"><span class="sakina-title">' + t('Next prayer') + '</span><strong>' + (next ? next.name : '') + '</strong><span class="sakina-count"></span></div><div class="sakina-times"></div><div class="sakina-place"></div>';
+      var h =
+        '<div class="sakina-head"><span class="sakina-title">' +
+        t('Next prayer') +
+        '</span><strong>' +
+        (next ? next.name : '') +
+        '</strong><span class="sakina-count"></span></div><div class="sakina-times"></div><div class="sakina-place"></div>';
       if (el._key !== h + JSON.stringify(timings) + Math.floor(Date.now() / 60000)) {
         el._key = h + JSON.stringify(timings) + Math.floor(Date.now() / 60000);
         el.innerHTML = h;
         el.querySelector('.sakina-count').textContent = next ? next.time + ' · ' + rem + ' ' + t('min left') : '';
-        var rows = [['Fajr', timings.Fajr], ['Dhuhr', timings.Dhuhr], ['Asr', timings.Asr], ['Maghrib', timings.Maghrib], ['Isha', timings.Isha]];
-        el.querySelector('.sakina-times').innerHTML = rows.map(function (r) { return '<span><i>' + t(r[0]) + '</i><b>' + r[1] + '</b></span>'; }).join('');
+        var rows = [
+          ['Fajr', timings.Fajr],
+          ['Dhuhr', timings.Dhuhr],
+          ['Asr', timings.Asr],
+          ['Maghrib', timings.Maghrib],
+          ['Isha', timings.Isha],
+        ];
+        el.querySelector('.sakina-times').innerHTML = rows
+          .map(function (r) {
+            return '<span><i>' + t(r[0]) + '</i><b>' + r[1] + '</b></span>';
+          })
+          .join('');
         el.querySelector('.sakina-place').textContent = place;
       }
     },
   },
   adhkar: {
-    name: function () { return t('Daily adhkar'); },
+    name: function () {
+      return t('Daily adhkar');
+    },
     draw: function (el, o) {
-      var idx = el._adhkarIndex === undefined ? Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length : el._adhkarIndex, item = ADHKAR_ITEMS[idx];
+      var idx = el._adhkarIndex === undefined ? Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length : el._adhkarIndex,
+        item = ADHKAR_ITEMS[idx];
       var key = idx + '|' + item.text;
       if (el._key === key) return;
       el._key = key;
@@ -3406,7 +3489,13 @@ var CARD_TYPES = {
       el.querySelector('.dhikr-meta').textContent = item.count + ' · ' + item.source;
       el._o = { action: 'card', label: t('Daily adhkar') };
     },
-    act: function (el) { el._adhkarIndex = ((el._adhkarIndex === undefined ? Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length : el._adhkarIndex) + 1) % ADHKAR_ITEMS.length; el._key = ''; tickCards(); },
+    act: function (el) {
+      el._adhkarIndex =
+        ((el._adhkarIndex === undefined ? Math.floor(Date.now() / 90000) % ADHKAR_ITEMS.length : el._adhkarIndex) + 1) %
+        ADHKAR_ITEMS.length;
+      el._key = '';
+      tickCards();
+    },
   },
 
   /* "Good morning" by the time of day, with an optional name and an optional second line (the date); set on the phone page */
@@ -3775,14 +3864,12 @@ var SAKINA_OPEN = false,
   SAKINA_LAST_SOUND = '';
 function sakinaPrayerCard() {
   var cards = (cfg && cfg.cards) || {};
-  for (var k in cards)
-    if (cards[k] && cards[k].type === 'prayer') return cards[k];
+  for (var k in cards) if (cards[k] && cards[k].type === 'prayer') return cards[k];
   return null;
 }
 function sakinaDhikrCard() {
   var cards = (cfg && cfg.cards) || {};
-  for (var k in cards)
-    if (cards[k] && cards[k].type === 'adhkar') return cards[k];
+  for (var k in cards) if (cards[k] && cards[k].type === 'adhkar') return cards[k];
   return null;
 }
 function sakinaAudio(url, volume) {
@@ -3793,10 +3880,7 @@ function sakinaAudio(url, volume) {
       window.SAKINA_AUDIO = null;
     }
     window.SAKINA_AUDIO = new Audio(url);
-    window.SAKINA_AUDIO.volume = Math.max(
-      0,
-      Math.min(1, Number(volume) || 0.8)
-    );
+    window.SAKINA_AUDIO.volume = Math.max(0, Math.min(1, Number(volume) || 0.8));
     var playing = window.SAKINA_AUDIO.play();
     if (playing && playing.catch) playing.catch(function () {});
   } catch (e) {}
@@ -3839,20 +3923,8 @@ function sakinaPrayerMarkup() {
   });
   var n = document.getElementById('sakina-next');
   if (n && next) {
-    var mins = Math.max(
-      0,
-      Math.floor((next.at.getTime() - now.getTime()) / 60000)
-    );
-    n.textContent =
-      t('Next prayer') +
-      ' · ' +
-      next.name +
-      ' · ' +
-      next.time +
-      ' · ' +
-      mins +
-      ' ' +
-      t('min left');
+    var mins = Math.max(0, Math.floor((next.at.getTime() - now.getTime()) / 60000));
+    n.textContent = t('Next prayer') + ' · ' + next.name + ' · ' + next.time + ' · ' + mins + ' ' + t('min left');
   }
   if (p.sound === 'auto' && p.audio) {
     rows.some(function (r) {
@@ -3875,26 +3947,20 @@ function sakinaDraw() {
   var text = document.getElementById('sakina-dhikr'),
     meta = document.getElementById('sakina-source');
   if (text) text.textContent = item.text;
-  if (meta)
-    meta.textContent =
-      SAKINA_COUNT + ' / ' + item.count + ' ×  ·  ' + item.source;
+  if (meta) meta.textContent = SAKINA_COUNT + ' / ' + item.count + ' ×  ·  ' + item.source;
   var title = document.getElementById('sakina-dhikr-title');
   if (title) title.textContent = t('Daily adhkar');
   var kicker = document.querySelector('.sakina-prayer .sakina-kicker');
   if (kicker) kicker.textContent = t('Prayer times');
   var hint = document.getElementById('sakina-hint');
-  if (hint)
-    hint.textContent = t(
-      'Arrows change dhikr · OK counts · Up/Down/Blue plays or pauses audio · Back to leave'
-    );
+  if (hint) hint.textContent = t('Arrows change dhikr · OK counts · Up/Down/Blue plays or pauses audio · Back to leave');
   var date = document.getElementById('sakina-date');
   if (date) date.textContent = dateText();
   var play = document.getElementById('sakina-play'),
     p = sakinaPrayerCard();
   if (play) {
     play.textContent = t('Play recitation');
-    play.style.display =
-      p && p.audio && p.sound !== 'off' ? 'inline-block' : 'none';
+    play.style.display = p && p.audio && p.sound !== 'off' ? 'inline-block' : 'none';
   }
   sakinaPrayerMarkup();
 }
@@ -3944,10 +4010,7 @@ document.addEventListener(
     if (k === 13) {
       e.preventDefault();
       e.stopPropagation();
-      SAKINA_COUNT = Math.min(
-        ADHKAR_ITEMS[SAKINA_INDEX].count,
-        SAKINA_COUNT + 1
-      );
+      SAKINA_COUNT = Math.min(ADHKAR_ITEMS[SAKINA_INDEX].count, SAKINA_COUNT + 1);
       sakinaDraw();
     } else if (k === 37 || k === 39) {
       e.preventDefault();
@@ -3959,10 +4022,8 @@ document.addEventListener(
       e.preventDefault();
       e.stopPropagation();
       var p = sakinaPrayerCard();
-      if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused)
-        window.SAKINA_AUDIO.pause();
-      else if (p && p.audio && p.sound !== 'off')
-        sakinaAudio(p.audio, p.volume);
+      if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused) window.SAKINA_AUDIO.pause();
+      else if (p && p.audio && p.sound !== 'off') sakinaAudio(p.audio, p.volume);
     } else sakinaHide();
   },
   true

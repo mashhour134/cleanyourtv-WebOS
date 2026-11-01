@@ -100,14 +100,8 @@ run(async () => {
       req.on('error', reject);
     });
   try {
-    ok(
-      (await originStatus('file://com.cleanyourtv.sakina.test-webos')) === 200,
-      'the Sakina test app can call the service'
-    );
-    ok(
-      (await originStatus('file://com.cleanyourtv.sakina.other-webos')) === 403,
-      'unlisted app origins stay blocked'
-    );
+    ok((await originStatus('file://com.cleanyourtv.sakina.test-webos')) === 200, 'the Sakina test app can call the service');
+    ok((await originStatus('file://com.cleanyourtv.sakina.other-webos')) === 403, 'unlisted app origins stay blocked');
   } finally {
     await new Promise(resolve => serviceServer.close(resolve));
   }

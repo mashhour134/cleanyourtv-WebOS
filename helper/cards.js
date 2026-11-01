@@ -154,11 +154,34 @@ const TYPES = [
         key: 'method',
         kind: 'choice',
         label: 'Calculation method',
-        choices: [['4', 'Umm al-Qura'], ['3', 'Muslim World League'], ['2', 'Islamic Society of North America']],
+        choices: [
+          ['4', 'Umm al-Qura'],
+          ['3', 'Muslim World League'],
+          ['2', 'Islamic Society of North America'],
+        ],
       },
       { key: 'audio', kind: 'text', label: 'HTTPS audio URL (optional)' },
-      { key: 'volume', kind: 'choice', label: 'Audio volume', choices: [['0.4', 'Low'], ['0.6', 'Medium'], ['0.8', 'High'], ['1', 'Full']] },
-      { key: 'sound', kind: 'choice', label: 'Prayer audio', choices: [['off', 'Off'], ['manual', 'Play manually'], ['auto', 'Play at prayer time']] },
+      {
+        key: 'volume',
+        kind: 'choice',
+        label: 'Audio volume',
+        choices: [
+          ['0.4', 'Low'],
+          ['0.6', 'Medium'],
+          ['0.8', 'High'],
+          ['1', 'Full'],
+        ],
+      },
+      {
+        key: 'sound',
+        kind: 'choice',
+        label: 'Prayer audio',
+        choices: [
+          ['off', 'Off'],
+          ['manual', 'Play manually'],
+          ['auto', 'Play at prayer time'],
+        ],
+      },
     ],
   },
   {
