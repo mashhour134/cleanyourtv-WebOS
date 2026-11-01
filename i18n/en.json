@@ -1,6 +1,20 @@
 {
  "_name": "English",
  "_dir": "ltr",
+ "Prayer times": "Prayer times",
+ "Next prayer": "Next prayer",
+ "Daily adhkar": "Daily adhkar",
+ "Calculation method": "Calculation method",
+ "Umm al-Qura": "Umm al-Qura",
+ "Muslim World League": "Muslim World League",
+ "Islamic Society of North America": "Islamic Society of North America",
+ "Fajr": "Fajr",
+ "Dhuhr": "Dhuhr",
+ "Asr": "Asr",
+ "Maghrib": "Maghrib",
+ "Isha": "Isha",
+ "min left": "min left",
+ "Loading prayer times…": "Loading prayer times…",
  "%d channels": {
   "one": "%d channel",
   "other": "%d channels"
