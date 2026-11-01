@@ -107,7 +107,9 @@ function sakinaDraw() {
   sakinaPrayerMarkup();
 }
 function sakinaShow() {
-  if (document.hidden || LIVE.on || stack.length) {
+  /* The launcher can remain visibly on screen while webOS reports document.hidden.
+     The visibilitychange handler already hides Sakina when the launcher actually leaves. */
+  if (LIVE.on || stack.length) {
     SAKINA_IDLE = setTimeout(sakinaShow, 180000);
     return;
   }
@@ -177,9 +179,15 @@ document.addEventListener(
   },
   true
 );
+var sakinaPointerX = null,
+  sakinaPointerY = null;
 document.addEventListener(
   'mousemove',
-  function () {
+  function (e) {
+    /* Ignore tiny pointer jitter from the Magic Remote; it must not keep resetting the idle timer. */
+    if (sakinaPointerX !== null && Math.abs(e.clientX - sakinaPointerX) + Math.abs(e.clientY - sakinaPointerY) < 18) return;
+    sakinaPointerX = e.clientX;
+    sakinaPointerY = e.clientY;
     if (!SAKINA_OPEN) sakinaWake();
   },
   true
