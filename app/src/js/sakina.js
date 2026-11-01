@@ -15,7 +15,8 @@ function sakinaAudio(url) {
   try {
     if (window.SAKINA_AUDIO) { window.SAKINA_AUDIO.pause(); window.SAKINA_AUDIO = null; }
     window.SAKINA_AUDIO = new Audio(url);
-    window.SAKINA_AUDIO.play();
+    var playing = window.SAKINA_AUDIO.play();
+    if (playing && playing.catch) playing.catch(function () {});
   } catch (e) {}
 }
 function sakinaPrayerMarkup() {
@@ -59,11 +60,11 @@ function sakinaDraw() {
   var kicker = document.querySelector('.sakina-prayer .sakina-kicker');
   if (kicker) kicker.textContent = t('Prayer times');
   var hint = document.getElementById('sakina-hint');
-  if (hint) hint.textContent = t('Use arrows or OK to change the dhikr · Back to leave');
+  if (hint) hint.textContent = t('Use arrows to change the dhikr · OK to play or pause · Back to leave');
   var date = document.getElementById('sakina-date');
   if (date) date.textContent = dateText();
   var play = document.getElementById('sakina-play'), p = sakinaPrayerCard();
-  if (play) { play.textContent = t('Play recitation'); play.style.display = p && p.audio ? 'inline-block' : 'none'; }
+  if (play) { play.textContent = t('Play recitation'); play.style.display = p && p.audio && p.sound !== 'off' ? 'inline-block' : 'none'; }
   sakinaPrayerMarkup();
 }
 function sakinaShow() {
@@ -96,7 +97,7 @@ document.addEventListener('keydown', function (e) {
     if (k === 13) {
       var p = sakinaPrayerCard();
       if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused) window.SAKINA_AUDIO.pause();
-      else if (p && p.audio) sakinaAudio(p.audio);
+      else if (p && p.audio && p.sound !== 'off') sakinaAudio(p.audio);
     } else if (k === 37 || k === 39 || k === 40 || k === 38) {
       SAKINA_INDEX = (SAKINA_INDEX + 1) % ADHKAR_ITEMS.length;
       sakinaDraw();
