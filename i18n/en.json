@@ -1,6 +1,12 @@
 {
  "_name": "English",
  "_dir": "ltr",
+ "HTTPS audio URL (optional)": "HTTPS audio URL (optional)",
+ "Audio volume": "Audio volume",
+ "Low": "Low",
+ "High": "High",
+ "Full": "Full",
+ "Arrows change dhikr · OK counts · Up plays or pauses audio · Back to leave": "Arrows change dhikr · OK counts · Up plays or pauses audio · Back to leave",
  "Audio URL (optional)": "Audio URL (optional)",
  "Prayer audio": "Prayer audio",
  "Play manually": "Play manually",
