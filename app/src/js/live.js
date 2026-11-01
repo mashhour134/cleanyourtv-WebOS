@@ -1019,6 +1019,7 @@ var LIVE = (function () {
   }
   var guideNext = false;
   o.enter = function (guide) {
+    sakinaHide();
     o.on = true;
     guideNext = !!guide;
     $('lv').classList.add('on');
