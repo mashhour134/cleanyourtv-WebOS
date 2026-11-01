@@ -276,11 +276,11 @@ var ADHKAR_ITEMS = [
 function prayerFor(o) {
   var lat = +o.lat, lon = +o.lon, method = +o.method || 4;
   if (!isFinite(lat) || !isFinite(lon)) return null;
-  var key = lat + ',' + lon + ',' + method, e = PRAYER_CACHE[key] || (PRAYER_CACHE[key] = { data: null, at: 0, busy: false });
+  var key = lat + ',' + lon + ',' + method, e = PRAYER_CACHE[key] || (PRAYER_CACHE[key] = { data: null, error: '', at: 0, busy: false });
   if (!e.busy && Date.now() - e.at > 1800000) {
     e.busy = true;
     api('/api/cards/prayer', { lat: lat, lon: lon, method: method }).then(function (r) {
-      e.busy = false; e.at = Date.now(); e.data = r && r.timings ? r : null; tickCards();
+      e.busy = false; e.at = Date.now(); e.data = r && r.timings ? r : null; e.error = r && r.error ? String(r.error) : ''; tickCards();
     }).catch(function () { e.busy = false; e.at = Date.now() - 1500000; });
   }
   return e.data;
@@ -308,7 +308,7 @@ var CARD_TYPES = {
       if (!timings) {
         el.innerHTML = '<div class="sakina-title"></div><div class="sakina-note"></div>';
         el.querySelector('.sakina-title').textContent = t('Prayer times');
-        el.querySelector('.sakina-note').textContent = o.lat === undefined ? t('Choose a place from your phone') : t('Loading prayer times…');
+        el.querySelector('.sakina-note').textContent = o.lat === undefined ? t('Choose a place from your phone') : (PRAYER_CACHE[(+o.lat) + ',' + (+o.lon) + ',' + (+o.method || 4)] || {}).error ? t('Prayer times unavailable.') : t('Loading prayer times…');
         return;
       }
       var rem = next ? Math.max(0, Math.floor((next.at.getTime() - Date.now()) / 60000)) : 0;
