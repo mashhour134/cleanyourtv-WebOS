@@ -146,6 +146,24 @@ const TYPES = [
     ],
   },
   {
+    type: 'prayer',
+    name: 'Prayer times',
+    fields: [
+      { key: 'place', kind: 'place', label: 'Place' },
+      {
+        key: 'method',
+        kind: 'choice',
+        label: 'Calculation method',
+        choices: [['4', 'Umm al-Qura'], ['3', 'Muslim World League'], ['2', 'Islamic Society of North America']],
+      },
+    ],
+  },
+  {
+    type: 'adhkar',
+    name: 'Daily adhkar',
+    fields: [{ key: 'section', kind: 'choice', label: 'Section', choices: [['daily', 'Daily'], ['morning', 'Morning'], ['evening', 'Evening']] }],
+  },
+  {
     type: 'template',
     name: 'Text',
     fields: [
@@ -296,6 +314,7 @@ function create(ctx) {
     if (u === '/api/cards/set') return web.json(res, setType(String(b.slot || ''), String(b.type || '')));
     // the weather card: {lat, lon, unit} -> the weather there (Open-Meteo, at most every 30 minutes)
     if (u === '/api/cards/weather') return web.json(res, await weather.get(b.lat, b.lon, b.unit));
+    if (u === '/api/cards/prayer') return web.json(res, await require('./prayer').get(b.lat, b.lon, b.method));
     // Home Assistant cards: {ids} -> their states (kept 20 s); {id} -> switched (lights, switches, fans, scenes, scripts)
     if (u === '/api/cards/ha') return web.json(res, await ha.states(b.ids));
     if (u === '/api/cards/ha/toggle') return web.json(res, await ha.toggle(b.id));
