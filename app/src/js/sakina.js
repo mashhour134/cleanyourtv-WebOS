@@ -63,7 +63,7 @@ function sakinaDraw() {
   var kicker = document.querySelector('.sakina-prayer .sakina-kicker');
   if (kicker) kicker.textContent = t('Prayer times');
   var hint = document.getElementById('sakina-hint');
-  if (hint) hint.textContent = t('Arrows change dhikr · OK counts · Up plays or pauses audio · Back to leave');
+  if (hint) hint.textContent = t('Arrows change dhikr · OK counts · Up/Down/Blue plays or pauses audio · Back to leave');
   var date = document.getElementById('sakina-date');
   if (date) date.textContent = dateText();
   var play = document.getElementById('sakina-play'), p = sakinaPrayerCard();
