@@ -96,12 +96,16 @@ document.addEventListener('keydown', function (e) {
     e.preventDefault(); e.stopPropagation();
     if (k === 461 || k === 27 || k === 8) { sakinaHide(); return; }
     if (k === 13) {
+      SAKINA_COUNT = Math.min(ADHKAR_ITEMS[SAKINA_INDEX].count, SAKINA_COUNT + 1);
+      sakinaDraw();
+    } else if (k === 37 || k === 39) {
+      SAKINA_INDEX = (SAKINA_INDEX + 1) % ADHKAR_ITEMS.length;
+      SAKINA_COUNT = 0;
+      sakinaDraw();
+    } else if (k === 38 || k === 40 || k === 403) {
       var p = sakinaPrayerCard();
       if (window.SAKINA_AUDIO && !window.SAKINA_AUDIO.paused) window.SAKINA_AUDIO.pause();
-      else if (p && p.audio && p.sound !== 'off') sakinaAudio(p.audio);
-    } else if (k === 37 || k === 39 || k === 40 || k === 38) {
-      SAKINA_INDEX = (SAKINA_INDEX + 1) % ADHKAR_ITEMS.length;
-      sakinaDraw();
+      else if (p && p.audio && p.sound !== 'off') sakinaAudio(p.audio, p.volume);
     }
     return;
   }
