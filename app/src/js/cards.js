@@ -278,6 +278,9 @@ function prayerFor(o) {
     lon = +o.lon,
     method = +o.method || 4;
   if (!isFinite(lat) || !isFinite(lon)) return null;
+  /* worked out on the TV unless the card says online (or the method is only online): works without internet */
+  var local = prayerLocal(o);
+  if (local) return local;
   var key = lat + ',' + lon + ',' + method,
     e = PRAYER_CACHE[key] || (PRAYER_CACHE[key] = { data: null, error: '', at: 0, busy: false });
   if (!e.busy && Date.now() - e.at > 1800000) {

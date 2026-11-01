@@ -742,5 +742,9 @@
  "Dial": "قرص",
  "Circular dial on the right": "قرص دائري على اليمين",
  "System default (LG webOS)": "افتراضي النظام (LG webOS)",
- "Stock TV volume bar": "شريط صوت التلفزيون الأصلي"
+ "Stock TV volume bar": "شريط صوت التلفزيون الأصلي",
+ "Times from": "مصدر المواقيت",
+ "Calculated on the TV (no internet)": "تُحسب على التلفزيون (بدون إنترنت)",
+ "AlAdhan (online)": "AlAdhan (عبر الإنترنت)",
+ "Egyptian General Authority of Survey": "الهيئة المصرية العامة للمساحة"
 }
