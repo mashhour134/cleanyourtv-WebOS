@@ -8,7 +8,7 @@ const web = require('./web');
 
 // Who may call: our own apps (local files; their requests carry Origin "null", "file://<app id>-webos" on webOS 6, or a bare
 // "file://" on webOS 4, whose Chromium 53 names no app, so it is no more specific than "null") and programs
-const OUR_APPS = /^file:\/\/((com\.webos\.app\.home|com\.cleanyourtv\.(manager|picker|notify|live))-webos)?$/;
+const OUR_APPS = /^file:\/\/((com\.webos\.app\.home|com\.cleanyourtv\.(manager|picker|notify|live|sakina\.test))-webos)?$/;
 
 function create(opts) {
   const features = opts.features; // a function returning the loaded features, in order
