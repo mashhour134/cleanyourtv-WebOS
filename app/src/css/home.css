@@ -726,6 +726,62 @@ body.wpon {
   font-weight: 700;
   line-height: 1.15;
 }
+/* Sakina cards: quiet, readable prayer times and daily adhkar */
+.card-prayer,
+.card-adhkar {
+  color: var(--ink);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  line-height: 1.35;
+}
+.sakina-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+[data-align="right"] .sakina-head { align-items: flex-end; }
+[data-align="center"] .sakina-head { align-items: center; }
+.sakina-title {
+  color: var(--ink2);
+  font-size: calc(20px * var(--fs));
+  letter-spacing: 0.06em;
+}
+.sakina-head strong {
+  margin-top: 3px;
+  font-size: calc(40px * var(--fs));
+  font-weight: 600;
+}
+.sakina-count {
+  font-size: calc(24px * var(--fs));
+  color: var(--ink);
+}
+.sakina-times {
+  display: flex;
+  margin-top: 12px;
+  font-size: calc(20px * var(--fs));
+}
+.sakina-times span {
+  display: flex;
+  flex-direction: column;
+  margin-inline-end: 16px;
+}
+.sakina-times i {
+  color: var(--ink2);
+  font-style: normal;
+}
+.sakina-times b { font-weight: 600; }
+.sakina-place,
+.sakina-note,
+.dhikr-meta {
+  margin-top: 8px;
+  color: var(--ink2);
+  font-size: calc(18px * var(--fs));
+}
+.dhikr-text {
+  margin-top: 12px;
+  font-size: calc(30px * var(--fs));
+  font-weight: 500;
+  line-height: 1.5;
+}
 /* the weather card: the icon and the temperature, the place and the sky in words, and the next days in a row */
 .card-weather {
   color: var(--ink);
