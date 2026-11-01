@@ -156,6 +156,8 @@ const TYPES = [
         label: 'Calculation method',
         choices: [['4', 'Umm al-Qura'], ['3', 'Muslim World League'], ['2', 'Islamic Society of North America']],
       },
+      { key: 'audio', kind: 'text', label: 'Audio URL (optional)' },
+      { key: 'sound', kind: 'choice', label: 'Prayer audio', choices: [['off', 'Off'], ['manual', 'Play manually'], ['auto', 'Play at prayer time']] },
     ],
   },
   {
