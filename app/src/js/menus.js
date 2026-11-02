@@ -768,6 +768,12 @@ function customizeMenu() {
         stay: true,
         fn: wallMenu,
       },
+      {
+        label: t('Sakina screen'),
+        sub: sakinaIdleMs(cfg) ? t('%s min').replace('%s', sakinaIdleMs(cfg) / 60000) : t('Off'),
+        stay: true,
+        fn: sakinaMenu,
+      },
       { label: t('Accent colour'), stay: true, fn: accentMenu },
       { sep: true },
       {
@@ -826,6 +832,33 @@ function wallMenu() {
         sub: t('in the CleanYourTV app'),
         fn: function () {
           launch('com.cleanyourtv.manager', { open: 'wallpapers' });
+        },
+      },
+    ];
+  });
+}
+/* Sakina screen (sakina.js): the minutes without a key before it appears (or never); "Try it now" shows it at once */
+function sakinaMenu() {
+  openBuilt(t('Sakina screen'), function () {
+    var MV = [0, 1, 3, 5, 10],
+      m = sakinaIdleMs(cfg) / 60000;
+    return [
+      {
+        label: t('Start after'),
+        sub: m ? t('%s min').replace('%s', m) : t('Off'),
+        stay: true,
+        fn: function () {
+          var k = MV.indexOf(m);
+          cfg.sakina = { mins: MV[(k < 0 ? 2 : k + 1) % MV.length] };
+          saveCfg();
+          sakinaWake();
+        },
+      },
+      {
+        label: t('Try it now'),
+        sub: t('Back to leave'),
+        fn: function () {
+          sakinaShow(true);
         },
       },
     ];

@@ -4,6 +4,27 @@ var SAKINA_OPEN = false,
   SAKINA_INDEX = 0,
   SAKINA_COUNT = 0,
   SAKINA_LAST_SOUND = '';
+/* the idle time before the Sakina screen: cfg.sakina.mins is 1, 3, 5 or 10 (0: never); 3 minutes when nothing is set */
+function sakinaIdleMs(c) {
+  var m = c && c.sakina && typeof c.sakina.mins === 'number' ? c.sakina.mins : 3;
+  return m > 0 ? m * 60000 : 0;
+}
+function sakinaArm() {
+  var ms = sakinaIdleMs(typeof cfg === 'undefined' ? null : cfg);
+  SAKINA_IDLE = ms ? setTimeout(sakinaShow, ms) : 0;
+}
+/* today in the Islamic calendar (Umm al-Qura), in the launcher's language; '' where the browser has no such calendar */
+function sakinaHijri() {
+  try {
+    return new Date().toLocaleDateString(String(LOC).split('-u-')[0] + '-u-ca-islamic-umalqura', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  } catch (e) {
+    return '';
+  }
+}
 function sakinaPrayerCard() {
   var cards = (cfg && cfg.cards) || {};
   for (var k in cards) if (cards[k] && cards[k].type === 'prayer') return cards[k];
@@ -52,11 +73,14 @@ function sakinaPrayerMarkup() {
       ['Isha', data.timings.Isha],
     ];
   el.innerHTML = '';
-  rows.forEach(function (r) {
+  /* the Sunrise row is shown but never counts as a prayer: not the next one, and no audio */
+  var shown = rows.slice();
+  if (data.timings.Sunrise) shown.splice(1, 0, ['Sunrise', data.timings.Sunrise]);
+  shown.forEach(function (r) {
     var row = document.createElement('div'),
       name = document.createElement('span'),
       time = document.createElement('b');
-    row.className = 'sakina-row' + (next && r[1] === next.time ? ' next' : '');
+    row.className = 'sakina-row' + (r[0] === 'Sunrise' ? ' sun' : next && r[1] === next.time ? ' next' : '');
     name.textContent = t(r[0]);
     time.textContent = r[1];
     row.appendChild(name);
@@ -96,8 +120,12 @@ function sakinaDraw() {
   if (kicker) kicker.textContent = t('Prayer times');
   var hint = document.getElementById('sakina-hint');
   if (hint) hint.textContent = t('Arrows change dhikr · OK counts · Up/Down/Blue plays or pauses audio · Back to leave');
-  var date = document.getElementById('sakina-date');
-  if (date) date.textContent = dateText();
+  var date = document.getElementById('sakina-date'),
+    hijri = sakinaHijri(),
+    dtext = dateText() + (hijri ? '  \u00B7  ' + hijri : ''),
+    clock = document.getElementById('sakina-time');
+  if (date && date.textContent !== dtext) date.textContent = dtext;
+  if (clock && clock.textContent !== timeText()) clock.textContent = timeText();
   var play = document.getElementById('sakina-play'),
     p = sakinaPrayerCard();
   if (play) {
@@ -106,11 +134,12 @@ function sakinaDraw() {
   }
   sakinaPrayerMarkup();
 }
-function sakinaShow() {
+function sakinaShow(force) {
   /* The launcher can remain visibly on screen while webOS reports document.hidden.
-     The visibilitychange handler already hides Sakina when the launcher actually leaves. */
-  if (LIVE.on || stack.length) {
-    SAKINA_IDLE = setTimeout(sakinaShow, 180000);
+     The visibilitychange handler already hides Sakina when the launcher actually leaves.
+     force (Customise > Sakina screen > Try it now) shows it over an open menu too. */
+  if (force !== true && (LIVE.on || stack.length)) {
+    sakinaArm();
     return;
   }
   var el = document.getElementById('sakina-screen');
@@ -135,7 +164,7 @@ function sakinaHide() {
 function sakinaWake() {
   clearTimeout(SAKINA_IDLE);
   if (SAKINA_OPEN) sakinaHide();
-  SAKINA_IDLE = setTimeout(sakinaShow, 180000);
+  sakinaArm();
 }
 document.addEventListener(
   'keydown',

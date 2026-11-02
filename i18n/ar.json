@@ -746,5 +746,10 @@
  "Times from": "مصدر المواقيت",
  "Calculated on the TV (no internet)": "تُحسب على التلفزيون (بدون إنترنت)",
  "AlAdhan (online)": "AlAdhan (عبر الإنترنت)",
- "Egyptian General Authority of Survey": "الهيئة المصرية العامة للمساحة"
+ "Egyptian General Authority of Survey": "الهيئة المصرية العامة للمساحة",
+ "Sakina screen": "شاشة سَكينة",
+ "%s min": "%s د",
+ "Start after": "تبدأ بعد",
+ "Back to leave": "Back للخروج",
+ "Sunrise": "الشروق"
 }

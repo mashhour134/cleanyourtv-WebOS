@@ -16,6 +16,7 @@ const P = require('./paths'),
 
 const HALF_LIFE = 30 * 24 * 3600 * 1000; // usage counts halve every 30 days
 const WALL_SECS = [0, 10, 30, 60, 180, 300, 900, 3600]; // the photo-change intervals Customise > Wallpapers offers
+const SAKINA_MINS = [0, 1, 3, 5, 10]; // the minutes without a key before the Sakina screen (0: never) Customise > Sakina screen offers
 const HOME = 'com.webos.app.home';
 // never offered for uninstall: the Homebrew Channel runs the boot scripts (root, CleanYourTV, the update blocking), and the other two keep
 // LG's firmware updates away
@@ -310,6 +311,8 @@ function create(ctx) {
       const secs = typeof b.wall.secs === 'number' ? b.wall.secs : typeof b.wall.every === 'number' ? b.wall.every * 60 : 900;
       out.wall = { on: b.wall.on === true, secs: WALL_SECS.indexOf(secs) >= 0 ? secs : 900 };
     }
+    // the Sakina screen (sakina.js): the minutes without a key before it appears, 0 for never
+    if (b.sakina && typeof b.sakina === 'object') out.sakina = { mins: SAKINA_MINS.indexOf(b.sakina.mins) >= 0 ? b.sakina.mins : 3 };
     // the cards in the theme's slots (Customise > Cards), checked for shape only (cards.js)
     const cards = cardsShape.sanitize(b.cards);
     if (cards) out.cards = cards;

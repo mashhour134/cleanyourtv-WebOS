@@ -97,6 +97,17 @@ run(async () => {
     w10.on && w10.secs === 10 && wOld.secs === 300 && config.get().wall.secs === 900,
     "Wallpapers: the photo interval is saved in seconds (10 s up to an hour), an older launcher's minutes are converted, an unknown value becomes 15 min"
   );
+  await call(apps, '/api/config', 'POST', { sakina: { mins: 10 } });
+  const sk10 = config.get().sakina;
+  await call(apps, '/api/config', 'POST', { sakina: { mins: 0 } });
+  const sk0 = config.get().sakina;
+  await call(apps, '/api/config', 'POST', { sakina: { mins: 7 } });
+  const skOdd = config.get().sakina;
+  await call(apps, '/api/config', 'POST', { sakina: 'soon' });
+  ok(
+    sk10.mins === 10 && sk0.mins === 0 && skOdd.mins === 3 && config.get().sakina === undefined,
+    'Sakina screen: 1, 3, 5 or 10 minutes or never (0) are saved, an unknown number becomes 3, and anything else is dropped'
+  );
 
   config.update('test', c => {
     c.dock = ['a.one', 'com.webos.app.hdmi2'];
