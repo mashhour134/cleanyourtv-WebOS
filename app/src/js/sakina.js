@@ -44,10 +44,54 @@ function sakinaAudio(url, volume) {
     }
     window.SAKINA_AUDIO = new Audio(url);
     window.SAKINA_AUDIO.volume = Math.max(0, Math.min(1, Number(volume) || 0.8));
+    window.SAKINA_AUDIO.onerror = sakinaAudioFailed;
     var playing = window.SAKINA_AUDIO.play();
-    if (playing && playing.catch) playing.catch(function () {});
-  } catch (e) {}
+    if (playing && playing.catch) playing.catch(sakinaAudioFailed);
+  } catch (e) {
+    sakinaAudioFailed();
+  }
 }
+/* a link that does not play (not found, not audio, blocked): said on screen and written to the service log (Share log) */
+function sakinaAudioFailed() {
+  toast(t('The audio could not be played. Check the link.'), true);
+  logLine('sakina audio could not be played');
+}
+/* the adhan: at the minute of a prayer, once for each prayer of a day (kept across a restart of the launcher). rows: [[name, 'HH:MM'], ...] */
+function sakinaAdhanCheck(p, rows, now) {
+  rows.some(function (r) {
+    var hm = String(r[1] || '').split(':');
+    if (hm.length !== 2 || now.getHours() !== +hm[0] || now.getMinutes() !== +hm[1]) return false;
+    var key = now.toDateString() + r[0],
+      done = SAKINA_LAST_SOUND;
+    try {
+      done = done || localStorage.getItem('sakina.adhan') || '';
+    } catch (e) {}
+    if (key !== done) {
+      SAKINA_LAST_SOUND = key;
+      try {
+        localStorage.setItem('sakina.adhan', key);
+      } catch (e) {}
+      sakinaAudio(p.audio, p.volume);
+    }
+    return true;
+  });
+}
+/* the adhan also plays while Home is showing and Sakina is not open (it is checked while Sakina is open by sakinaDraw); not while the
+   launcher is hidden behind another app, where a page cannot be sure to run */
+function sakinaAdhanTick() {
+  var p = sakinaPrayerCard();
+  if (!p || p.sound !== 'auto' || !p.audio || SAKINA_OPEN || document.hidden) return;
+  var data = prayerFor(p);
+  if (!data || !data.timings) return;
+  sakinaAdhanCheck(
+    p,
+    ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].map(function (k) {
+      return [k, data.timings[k]];
+    }),
+    new Date()
+  );
+}
+setInterval(sakinaAdhanTick, 15000);
 function sakinaPrayerMarkup() {
   var p = sakinaPrayerCard(),
     data = p && prayerFor(p),
@@ -89,24 +133,9 @@ function sakinaPrayerMarkup() {
   });
   var n = document.getElementById('sakina-next');
   if (n && next) {
-    var mins = Math.max(0, Math.floor((next.at.getTime() - now.getTime()) / 60000));
-    n.textContent = t('Next prayer') + ' · ' + next.name + ' · ' + next.time + ' · ' + mins + ' ' + t('min left');
+    n.textContent = t('Next prayer') + ' · ' + next.name + ' · ' + next.time + ' · ' + prayerRemain(next.at.getTime() - now.getTime());
   }
-  if (p.sound === 'auto' && p.audio) {
-    rows.some(function (r) {
-      var hm = String(r[1] || '').split(':');
-      if (hm.length !== 2) return false;
-      if (now.getHours() === +hm[0] && now.getMinutes() === +hm[1]) {
-        var key = now.toDateString() + r[0];
-        if (key !== SAKINA_LAST_SOUND) {
-          SAKINA_LAST_SOUND = key;
-          sakinaAudio(p.audio, p.volume);
-        }
-        return true;
-      }
-      return false;
-    });
-  }
+  if (p.sound === 'auto' && p.audio) sakinaAdhanCheck(p, rows, now);
 }
 function sakinaDraw() {
   var item = ADHKAR_ITEMS[SAKINA_INDEX % ADHKAR_ITEMS.length];

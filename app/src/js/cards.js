@@ -301,6 +301,20 @@ function prayerFor(o) {
   }
   return e.data || (e.error ? { error: e.error } : null);
 }
+/* the time left until a prayer, in hours and minutes: "6 hours and 8 minutes remaining", and "42 min left" under an hour */
+function prayerRemain(ms) {
+  var mins = Math.max(0, Math.floor(ms / 60000)),
+    h = Math.floor(mins / 60),
+    m = mins % 60;
+  if (!h) return mins + ' ' + t('min left');
+  var hs = t(h + ' hours'),
+    s = m
+      ? t('%s and %s')
+          .replace('%s', hs)
+          .replace('%s', t(m + ' minutes'))
+      : hs;
+  return s + ' ' + t('remaining');
+}
 function prayerNext(data) {
   if (!data || !data.timings) return null;
   var now = new Date(),
@@ -353,7 +367,7 @@ var CARD_TYPES = {
       if (el._key !== h + JSON.stringify(timings) + Math.floor(Date.now() / 60000)) {
         el._key = h + JSON.stringify(timings) + Math.floor(Date.now() / 60000);
         el.innerHTML = h;
-        el.querySelector('.sakina-count').textContent = next ? next.time + ' · ' + rem + ' ' + t('min left') : '';
+        el.querySelector('.sakina-count').textContent = next ? next.time + ' · ' + prayerRemain(next.at.getTime() - Date.now()) : '';
         var rows = [
           ['Fajr', timings.Fajr],
           ['Dhuhr', timings.Dhuhr],

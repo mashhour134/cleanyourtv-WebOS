@@ -751,5 +751,24 @@
  "%s min": "%s د",
  "Start after": "تبدأ بعد",
  "Back to leave": "Back للخروج",
- "Sunrise": "الشروق"
+ "Sunrise": "الشروق",
+ "%d hours": {
+  "zero": "%d ساعة",
+  "one": "%d ساعة",
+  "two": "%d ساعتان",
+  "few": "%d ساعات",
+  "many": "%d ساعة",
+  "other": "%d ساعة"
+ },
+ "%d minutes": {
+  "zero": "%d دقيقة",
+  "one": "%d دقيقة",
+  "two": "%d دقيقتان",
+  "few": "%d دقائق",
+  "many": "%d دقيقة",
+  "other": "%d دقيقة"
+ },
+ "%s and %s": "%s و%s",
+ "remaining": "متبقية",
+ "The audio could not be played. Check the link.": "تعذّر تشغيل الصوت. تأكد من الرابط."
 }

@@ -48,4 +48,67 @@ run(async () => {
     /LIVE\.on \|\| stack\.length/.test(js) && /< 18/.test(js),
     'the idle guards stay: not over Live TV or a menu, and pointer jitter is ignored'
   );
+
+  // the time left: hours and minutes (not "368 minutes"), in the launcher's language, with the plural forms of the language
+  const cards = fs.readFileSync(path.join(root, 'app', 'src', 'js', 'cards.js'), 'utf8'),
+    runtime = fs.readFileSync(path.join(root, 'i18n', 'runtime.js'), 'utf8'),
+    I18N = {};
+  for (const l of ['en', 'ar']) {
+    I18N[l] = JSON.parse(fs.readFileSync(path.join(root, 'i18n', l + '.json'), 'utf8'));
+    I18N[l]._name = l;
+  }
+  const remain = lang => {
+    const box = { window: {}, navigator: { language: lang }, document: { documentElement: {} }, I18N, Intl };
+    vm.runInNewContext(runtime + '\n' + source(cards, 'prayerRemain') + '\nsetLang("' + lang + '"); this.f = prayerRemain;', box, {
+      filename: 'prayerRemain',
+    });
+    return mins => box.f(mins * 60000);
+  };
+  const ar = remain('ar'),
+    en = remain('en');
+  ok(ar(368) === '6 ساعات و8 دقائق متبقية', 'Arabic: 368 minutes read "6 ساعات و8 دقائق متبقية" (got ' + ar(368) + ')');
+  ok(ar(120) === '2 ساعتان متبقية' && ar(60) === '1 ساعة متبقية', 'Arabic: whole hours have their own forms (ساعتان, ساعة)');
+  ok(
+    ar(61) === '1 ساعة و1 دقيقة متبقية' && ar(42) === '42 دقيقة متبقية',
+    'Arabic: one hour and one minute, and under an hour only minutes'
+  );
+  ok(
+    en(368) === '6 hours and 8 minutes remaining' && en(61) === '1 hour and 1 minute remaining',
+    'English: hours and minutes with singular and plural'
+  );
+  ok(en(42) === '42 min left' && en(0) === '0 min left', 'English: under an hour it stays "42 min left"');
+
+  // the adhan: once for each prayer of a day, kept across a restart of the launcher, and an unknown or empty time never plays
+  const store = {};
+  const adhan = () => {
+    const box = {
+      SAKINA_LAST_SOUND: '',
+      plays: [],
+      localStorage: { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => (store[k] = v) },
+      sakinaAudio: (u, v) => box.plays.push(u + '@' + v),
+    };
+    vm.runInNewContext(source(js, 'sakinaAdhanCheck') + '\nthis.f = sakinaAdhanCheck;', box, { filename: 'sakinaAdhanCheck' });
+    return box;
+  };
+  const rows = [
+    ['Fajr', '04:41'],
+    ['Dhuhr', '11:37'],
+    ['Isha', ''],
+  ];
+  const card = { audio: 'https://example.test/a.mp3', volume: '0.6' };
+  let a = adhan();
+  a.f(card, rows, new Date(2026, 10, 2, 4, 40, 30));
+  ok(a.plays.length === 0, 'a minute before the prayer: nothing plays');
+  a.f(card, rows, new Date(2026, 10, 2, 4, 41, 5));
+  a.f(card, rows, new Date(2026, 10, 2, 4, 41, 50));
+  ok(a.plays.length === 1 && a.plays[0] === 'https://example.test/a.mp3@0.6', 'at the minute of Fajr it plays once, with the card volume');
+  a = adhan(); // the launcher restarted within the same minute
+  a.f(card, rows, new Date(2026, 10, 2, 4, 41, 59));
+  ok(a.plays.length === 0, 'after a restart in the same minute it does not play again');
+  a.f(card, rows, new Date(2026, 10, 2, 11, 37, 2));
+  ok(a.plays.length === 1, 'the next prayer plays');
+  a.f(card, rows, new Date(2026, 10, 3, 4, 41, 2));
+  ok(a.plays.length === 2, 'and the same prayer the next day plays again');
+  a.f(card, [['Isha', '']], new Date(2026, 10, 3, 0, 0, 0));
+  ok(a.plays.length === 2, 'an empty prayer time never plays');
 });
