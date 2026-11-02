@@ -64,6 +64,7 @@ tuner) and is offered only when the TV has that app and **Show LG's own Live TV*
 - the **clock** format (automatic, 12 or 24 hour);
 - the **theme** (see [Themes](themes.md)) and the **accent colour**; the theme list shows each theme's screenshot;
 - **Wallpapers**: your own photos behind Home, and how often they change (see [Wallpapers](wallpapers.md));
+- **Sakina screen**: after how many minutes without a key it appears (1, 3, 5 or 10, or never), and **Try it now** (see [Sakina](sakina-screen-saver.md));
 - **More settings...**, which opens the [manager app](manager.md) for everything the TV and the service do.
 
 Putting the dock, buttons, hidden apps, order and clock back to the defaults is in the manager app: **Reset Home customisation**.

@@ -779,5 +779,21 @@
  "Times from": "Times from",
  "Calculated on the TV (no internet)": "Calculated on the TV (no internet)",
  "AlAdhan (online)": "AlAdhan (online)",
- "Egyptian General Authority of Survey": "Egyptian General Authority of Survey"
+ "Egyptian General Authority of Survey": "Egyptian General Authority of Survey",
+ "Sakina screen": "Sakina screen",
+ "%s min": "%s min",
+ "Start after": "Start after",
+ "Back to leave": "Back to leave",
+ "Sunrise": "Sunrise",
+ "%d hours": {
+  "one": "%d hour",
+  "other": "%d hours"
+ },
+ "%d minutes": {
+  "one": "%d minute",
+  "other": "%d minutes"
+ },
+ "%s and %s": "%s and %s",
+ "remaining": "remaining",
+ "The audio could not be played. Check the link.": "The audio could not be played. Check the link."
 }
